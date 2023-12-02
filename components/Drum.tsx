@@ -1,20 +1,28 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import GameButton from "./GameButton";
 
-const GAMEPAD_TIMER = 10;
 
 export interface DrumPropsI {
   name?: string;
   button: number;
   src: string;
   type?: string;
+  volume?: number;
   start?: number;
   end?: number;
 }
 
 export function Drum(props: DrumPropsI) {
-  const { button, src, type, start = 0, end = Infinity } = props;
+  const { button, src, type, volume = 1, start = 0, end = Infinity } = props;
   const ref = useRef<HTMLAudioElement>(null!);
   const [playing, setPlaying] = useState(false);
+
+  const handleStart = useCallback(() => {
+    const el = ref.current;
+    el.volume = volume;
+    el.pause();
+    el.play();
+  }, [volume])
 
   useEffect(() => {
     const el = ref.current;
@@ -42,36 +50,18 @@ export function Drum(props: DrumPropsI) {
       setPlaying(false);
     }
 
-    let buttonDown = false;
-    const upkeep = () => {
-      const gamepads = navigator.getGamepads();
-      for (const gamepad of Object.values(gamepads)) {
-        const { id, buttons } = gamepad || {};
-        if (!id || !buttons) return;
-
-        const { value } = gamepad?.buttons[button] || {};
-
-        if (value && !buttonDown && el) {
-          el.pause();
-          el.play();
-        }
-        buttonDown = Boolean(value);
-      }
-    }
-
     el.addEventListener('play', handlePlay)
     el.addEventListener('pause', handlePause)
-    const timer = setInterval(upkeep, GAMEPAD_TIMER);
 
     return () => {
       el.removeEventListener('play', handlePlay)
       el.removeEventListener('pause', handlePause)
-      clearInterval(timer)
     }
-  }, [button, start, end]);
+  }, [start, end]);
 
   return (
     <audio ref={ref} controls={playing}>
+      <GameButton button={button} onDown={handleStart} />
       <source src={src} type={type} />
     </audio>
   );
