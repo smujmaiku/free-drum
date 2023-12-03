@@ -36,7 +36,7 @@ export function Layout(props: LayoutProps): JSX.Element {
 			</Head>
 			<AppBar position="static">
 				<Toolbar>
-					<STitle variant="h6" component="h1">
+					<STitle variant="h6">
 						Free Drum
 					</STitle>
 					<GamepadNav />
