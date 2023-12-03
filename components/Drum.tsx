@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import GameButton from "./GameButton";
+import { useButton } from "@/context/GamePad";
 
 
 export interface DrumPropsI {
@@ -59,9 +59,10 @@ export function Drum(props: DrumPropsI) {
     }
   }, [start, end]);
 
+  useButton(button, handleStart);
+
   return (
     <audio ref={ref} controls={playing}>
-      <GameButton button={button} onDown={handleStart} />
       <source src={src} type={type} />
     </audio>
   );
