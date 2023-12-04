@@ -6,10 +6,12 @@ export default function Home() {
 
 	return (
 		<main>
-			Free Drum
-			{gamepads.filter(Boolean).map(gamepad => (
-				<span key={gamepad?.id}>{gamepad?.id}</span>
-			))}
+			<div>
+				Free Drum
+				{gamepads.filter(Boolean).map(gamepad => (
+					<p key={gamepad?.id}>{gamepad?.id}</p>
+				))}
+			</div>
 			<Drum
 				name="tom"
 				button={0}

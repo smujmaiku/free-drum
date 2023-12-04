@@ -11,6 +11,25 @@ body {
 	margin: 0;
 }
 
+main {
+	margin-top: 16px;
+	margin-bottom: 48px;
+}
+
+main > * {
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 800px;
+}
+
+main > .break-out {
+	max-width: 1024px;
+}
+
+main > .full-width {
+	max-width: 100vw;
+}
+
 #__next {
 	flex: 1 1 auto;
 }
@@ -45,7 +64,6 @@ export function Layout(props: LayoutProps): JSX.Element {
 			<main>
 				{children}
 			</main>
-
 		</Providers>
 	)
 }
